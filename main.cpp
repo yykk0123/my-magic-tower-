@@ -1,5 +1,13 @@
 #include <iostream>
 using namespace std;
+
+// use correct command to clean screen
+#if defined(__linux__)
+#define CLEAR system("clear")
+#else
+#define CLEAR system("cls")
+#endif // __linux__
+
 // 0为墙 1为空地 2为岩浆 3为门 4为上层块 5为下层块
 // 11为小血瓶 12为大血瓶 13为剑 14为盾 15为生命宝石 16为钥匙
 // 勇士为h 104
@@ -185,7 +193,7 @@ void print_map() {
 void Inputname() {
   cout << " 请输入你的名字：";
   cin >> hero.name;
-  system("cls");
+  CLEAR;
   print_map();
 }
 void monster_count() {
@@ -439,7 +447,7 @@ void key_enter() {
   case 'a':
   case 75:
     move(i, j, 0, -1);
-    system("cls");
+    CLEAR;
     print_map();
     if (hero.hp <= 0) {
       cout << "胜败乃兵家常事，大侠请重新来过  " << hero.score << '\n';
@@ -453,7 +461,7 @@ void key_enter() {
   case 'd':
   case 77:
     move(i, j, 0, 1);
-    system("cls");
+    CLEAR;
     print_map();
     if (hero.hp <= 0) {
       cout << "胜败乃兵家常事，大侠请重新来过  " << hero.score << '\n';
@@ -466,7 +474,7 @@ void key_enter() {
   case 'W':
   case 72:
     move(i, j, -1, 0);
-    system("cls");
+    CLEAR;
     print_map();
     if (hero.hp <= 0) {
       cout << "胜败乃兵家常事，大侠请重新来过  " << hero.score << '\n';
@@ -479,7 +487,7 @@ void key_enter() {
   case 'S':
   case 80:
     move(i, j, 1, 0);
-    system("cls");
+    CLEAR;
     print_map();
     if (hero.hp <= 0) {
       cout << "胜败乃兵家常事，大侠请重新来过  " << hero.score << '\n';
@@ -496,7 +504,7 @@ void key_enter() {
       if (hero.hp > hero.hp_limit) {
         hero.hp = hero.hp_limit;
       }
-      system("cls");
+      CLEAR;
       print_map();
       break;
     }
@@ -509,12 +517,12 @@ void key_enter() {
         hero.hp = hero.hp_limit;
       }
     }
-    system("cls");
+    CLEAR;
     print_map();
     break;
   case 'X':
   case 'x':
-    system("cls");
+    CLEAR;
     monster_count();
     cout << "名字：史莱姆酱\n"
          << "生命值：" << slime.hp << "\n"
@@ -549,12 +557,12 @@ void key_enter() {
     break;
   case 'Z':
   case 'z':
-    system("cls");
+    CLEAR;
     print_map();
     break;
   case 'R':
   case 'r':
-    system("cls");
+    CLEAR;
     hero = {"", 50, 50, 5, 20, 0, 0, 0, 0, 0};
     beelzebub = {100, 25, 15, 100};
     for (int i = 0; i < 10; i++) {

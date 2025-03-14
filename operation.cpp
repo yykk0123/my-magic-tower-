@@ -20,6 +20,7 @@ void update_hero_location(struct player *hero) {
 // else set it to blank block
 #define move_forward()                                                         \
   {                                                                            \
+    /* the block at the same location on map_original */                       \
     switch (*(current_block - map[0][0] + map_original[0][0])) {               \
     case LAVA:                                                                 \
       *current_block = LAVA;                                                   \

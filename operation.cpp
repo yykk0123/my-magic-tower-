@@ -18,9 +18,21 @@ void update_hero_location(struct player *hero) {
 
 // reset block to the origin if the block was lava, up_block or down_block
 // else set it to blank block
-#define move_forward(block)                                                    \
+#define move_forward()                                                         \
   {                                                                            \
-    *current_block = block;                                                    \
+    switch (*(current_block - map[0][0] + map_original[0][0])) {               \
+    case LAVA:                                                                 \
+      *current_block = LAVA;                                                   \
+      break;                                                                   \
+    case UP_BLOCK:                                                             \
+      *current_block = UP_BLOCK;                                               \
+      break;                                                                   \
+    case DOWN_BLOCK:                                                           \
+      *current_block = DOWN_BLOCK;                                             \
+      break;                                                                   \
+    default:                                                                   \
+      *current_block = SPACE;                                                  \
+    }                                                                          \
     *new_block = HERO;                                                         \
     hero->lct.x += dx;                                                         \
     hero->lct.y += dy;                                                         \
@@ -33,34 +45,29 @@ void move(struct player *hero, int direction) {
   int dy = (direction == DOWN) ? 1 : ((direction == UP) ? -1 : 0);
   int *new_block = &map[hero->lct.floor][hero->lct.y + dy][hero->lct.x + dx];
 
-#ifdef DEBUG
-  printf("moving from (%d, %d) to (%d, %d)\n", hero->lct.x, hero->lct.y,
-         hero->lct.x + dx, hero->lct.y + dy);
-  printf("the cureent block is %d, the new is %d\n", *current_block,
-         *new_block);
-#endif
-
   switch (*new_block) {
   case WALL: // do nothing
     break;
   case SPACE: // move forward
-    move_forward(SPACE);
+    move_forward();
     break;
   case LAVA: // lose 1 hp in lava
     hero->hp -= 1;
-    move_forward(LAVA);
+    move_forward();
     break;
   case DOOR: // move forward if have key(s), else do nothing
     if (hero->key) {
       hero->key -= 1;
-      move_forward(SPACE);
+      move_forward();
     }
     break;
   case UP_BLOCK: // go to up floor
+    move_forward();
     hero->lct.floor += 1;
     update_hero_location(hero);
     break;
   case DOWN_BLOCK: // go to down floor
+    move_forward();
     hero->lct.floor -= 1;
     update_hero_location(hero);
     break;
@@ -71,32 +78,32 @@ void move(struct player *hero, int direction) {
   case APOSTLE:
   case BEELZEBUB:
     if (battle(hero, *new_block))
-      move_forward(SPACE); // defeat the monster
+      move_forward(); // defeat the monster
     break;
 
   case SMALL_BOTTLE:
     hero->small_bottle += 1;
-    move_forward(SPACE);
+    move_forward();
     break;
   case BIG_BOTTLE:
     hero->big_bottle += 1;
-    move_forward(SPACE);
+    move_forward();
     break;
   case SWORD:
     hero->attack += 20;
-    move_forward(SPACE);
+    move_forward();
     break;
   case SHIELD:
     hero->defence += 10;
-    move_forward(SPACE);
+    move_forward();
     break;
   case LIFE_GEM:
     hero->hp_limit += 50;
-    move_forward(SPACE);
+    move_forward();
     break;
   case KEY:
     hero->key += 1;
-    move_forward(SPACE);
+    move_forward();
     break;
   }
 }
@@ -136,10 +143,7 @@ int battle(struct player *hero, int monster_type) {
 
   int attack = hero->attack - mst.defence;
   int hurt = mst.attack - hero->defence;
-#ifdef DEBUG
-  printf("fighting with %d, attack is %d, hurt is %d\n", monster_type, attack,
-         hurt);
-#endif
+
   if (attack <= 0 && hurt <= 0)
     return 0;
   else if (attack <= 0)
@@ -148,9 +152,7 @@ int battle(struct player *hero, int monster_type) {
     mst.hp -= attack * ROUND;
   else
     for (int round = 0; round < ROUND; round++) {
-#ifdef DEBUG
-      printf("hero's hp: %d, monster's hp: %d\n", hero->hp, mst.hp);
-#endif
+
       mst.hp -= attack;
       if (mst.hp <= 0) {
         hero->score += mst.score;
@@ -174,9 +176,7 @@ int battle(struct player *hero, int monster_type) {
 
 // print floor number, key number, map and properties
 void print_screen() {
-#ifndef DEBUG
   CLEAR;
-#endif
   std::cout << "第 " << hero.lct.floor + 1 << " 层\n";
   std::cout << "钥匙数 " << hero.key << '\n';
   for (int i = 0; i < 10; i++) {

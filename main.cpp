@@ -1,8 +1,9 @@
 #include <cctype>
 #include <cstdlib>
+#include <iostream>
 
-#include "elements.cpp"
-#include "operation.cpp"
+#include "elements.hpp"
+#include "operation.hpp"
 
 //   if (map[hero.floor][i + p][j + q] == 8) {
 //     struct monster bat_copy = bat;

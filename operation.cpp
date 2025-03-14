@@ -1,23 +1,10 @@
-#ifndef _OPERATION_CPP_
-#define _OPERATION_CPP_
-
 #include <cstdlib>
 #include <iostream>
 
-#include "elements.cpp"
-
-#define ROUND 50 // max rounds in battle
-
-// use correct command to clean screen
-#if defined(__linux__)
-#define CLEAR system("clear")
-#else
-#define CLEAR system("cls")
-#endif // __linux__
+#include "elements.hpp"
+#include "operation.hpp"
 
 int win = 0; // win or continue?
-
-int battle(struct player *hero, int monster_type);
 
 void update_hero_location(struct player *hero) {
   // get the location of the hero originally
@@ -28,13 +15,6 @@ void update_hero_location(struct player *hero) {
         hero->lct.x = j;
       }
 }
-
-enum move_around {
-  UP,
-  LEFT,
-  DOWN,
-  RIGHT,
-};
 
 // reset block to the origin if the block was lava, up_block or down_block
 // else set it to blank block
@@ -52,6 +32,7 @@ void move(struct player *hero, int direction) {
   int dx = (direction == LEFT) ? -1 : ((direction == RIGHT) ? 1 : 0);
   int dy = (direction == DOWN) ? 1 : ((direction == UP) ? -1 : 0);
   int *new_block = &map[hero->lct.floor][hero->lct.y + dy][hero->lct.x + dx];
+
 #ifdef DEBUG
   printf("moving from (%d, %d) to (%d, %d)\n", hero->lct.x, hero->lct.y,
          hero->lct.x + dx, hero->lct.y + dy);
@@ -83,6 +64,7 @@ void move(struct player *hero, int direction) {
     hero->lct.floor -= 1;
     update_hero_location(hero);
     break;
+
   case SLIME:
   case SKELETON:
   case BAT:
@@ -91,6 +73,7 @@ void move(struct player *hero, int direction) {
     if (battle(hero, *new_block))
       move_forward(SPACE); // defeat the monster
     break;
+
   case SMALL_BOTTLE:
     hero->small_bottle += 1;
     move_forward(SPACE);
@@ -295,5 +278,3 @@ void print_monster_information() {
             << "特殊属性：无\n"
             << "本层数量：" << monster_quantity[4] << "\n";
 }
-
-#endif // _OPERATION_CPP_

@@ -35,6 +35,8 @@ void initialize() {
 
 void key_enter() {
   char input_order = toupper(_getch());
+  if(hero.hp>0)
+  {
   switch (input_order) {
   case 'A':
     move(&hero, LEFT);
@@ -57,15 +59,16 @@ void key_enter() {
   case 'X':
     print_monster_information();
     return; // don't print map and other informations
-  case 'R':
-    CLEAR;
-    initialize();
-    return; // don't print map and other informations
   case 'Z':
     exit(EXIT_SUCCESS);
     break;
   }
-
+  }
+  if(input_order=='R'){
+    CLEAR;
+    initialize();
+    return; // don't print map and other informations
+  }
   print_screen();
 }
 

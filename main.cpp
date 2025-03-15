@@ -1,9 +1,11 @@
 #include <cctype>
 #include <cstdlib>
 #include <iostream>
+#include<conio.h>
 
 #include "elements.hpp"
 #include "operation.hpp"
+
 
 void initialize() {
   CLEAR;
@@ -32,7 +34,7 @@ void initialize() {
 }
 
 void key_enter() {
-  char input_order = toupper(getchar());
+  char input_order = toupper(_getch());
   switch (input_order) {
   case 'A':
     move(&hero, LEFT);

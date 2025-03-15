@@ -6,6 +6,14 @@
 #include "operation.hpp"
 
 void initialize() {
+  CLEAR;
+  hero = {
+      "", // name
+      50, // hp
+      50, // hp_limit
+      5,  // attack
+      20, // defence
+  };
   std::cout << "请输入你的名字：";
   std::cin >> hero.name;
 
@@ -18,6 +26,7 @@ void initialize() {
     }
   }
 
+  // initialize hero's location
   hero.lct.floor = 0;
   update_hero_location(&hero);
 }
@@ -48,8 +57,6 @@ void key_enter() {
     return; // don't print map and other informations
   case 'R':
     CLEAR;
-    hero = {"", 50, 50, 5, 20, 0, 0, 0, 0, 0};
-    beelzebub = {100, 25, 15, 100};
     initialize();
     return; // don't print map and other informations
   case 'Z':

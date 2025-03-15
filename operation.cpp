@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 
@@ -155,7 +156,7 @@ int battle(struct player *hero, int monster_type) {
     mst.hp -= attack * ROUND * (mst.SKILL == MENTAL_POLLUTION ? 2 / 3 : 1);
 
   else // they can hurt each other
-    for (int round = 0; round < ROUND && hero->hp > 0 && mst.hp > 0; round++) {
+    for (int round = 1; round < ROUND && hero->hp > 0 && mst.hp > 0; round++) {
       if (mst.SKILL == MENTAL_POLLUTION && round % 3 == 0)
         mst.hp += attack; // hero is interfered and can't attack monsters
       mst.hp -= attack;
@@ -216,16 +217,20 @@ void print_screen() {
             << "分数：" << hero.score << '\n';
 
   if (hero.hp <= 0)
-    std::cout << "胜败乃兵家常事，大侠请重新来过  " << hero.score << '\n';
+    std::cout << "胜败乃兵家常事，大侠请重新来过  " << '\n'
+              << "Your final score is: " << hero.score << '\n'
+              << "press 'R' to restart, 'Z' to exit...\n";
 
   if (win) {
-    std::cout << "你赢了！！！" << "  " << hero.score << std::endl;
-    exit(EXIT_SUCCESS);
+    std::cout << "你赢了！！！" << '\n'
+              << "Your final score is: " << hero.score << '\n'
+              << "press 'R' to restart, 'Z' to exit...\n";
   }
 }
 
 // print monsters' properties and numbers on current floor
 void print_monster_information() {
+  CLEAR;
   // count monsters
   int monster_quantity[5] = {};
   for (int i = 0; i < 10; i++) {
@@ -275,5 +280,8 @@ void print_monster_information() {
             << "攻击力：" << beelzebub.attack << "\n"
             << "防御力：" << beelzebub.defence << "\n"
             << "特殊属性：无\n"
-            << "本层数量：" << monster_quantity[4] << "\n";
+            << "本层数量：" << monster_quantity[4] << "\n"
+            << "\n"
+            << "press any key to continue...";
+  getchar();
 }

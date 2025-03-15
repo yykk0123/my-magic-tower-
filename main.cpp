@@ -66,6 +66,10 @@ void key_enter() {
     case 'X':
       print_monster_information();
       return; // don't print map and other informations
+    case 'R':
+      CLEAR;
+      initialize();
+      return; // don't print map and other informations
     case 'Z':
       exit(EXIT_SUCCESS);
       break;
@@ -75,7 +79,8 @@ void key_enter() {
     CLEAR;
     initialize();
     return; // don't print map and other informations
-  }
+  } else if (input_order == 'Z')
+    exit(EXIT_SUCCESS);
   print_screen();
 }
 

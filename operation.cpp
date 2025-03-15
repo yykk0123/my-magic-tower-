@@ -184,24 +184,24 @@ void print_screen() {
     for (int j = 0; j < 10; j++) {
       switch (map[hero.lct.floor][i][j]) {
         // clang-format off
-        case 0:   std::cout << "墙   "; break;
-        case 1:   std::cout << "空   "; break;
-        case 2:   std::cout << "岩   "; break;
-        case 3:   std::cout << "门   "; break;
-        case 4:   std::cout << "上   "; break;
-        case 5:   std::cout << "下   "; break;
-        case 6:   std::cout << "史   "; break;
-        case 7:   std::cout << "骷   "; break;
-        case 8:   std::cout << "蝠   "; break;
-        case 9:   std::cout << "使   "; break;
-        case 10:  std::cout << "王   "; break;
-        case 11:  std::cout << "小   "; break;
-        case 12:  std::cout << "大   "; break;
-        case 13:  std::cout << "剑   "; break;
-        case 14:  std::cout << "盾   "; break;
-        case 15:  std::cout << "石   "; break;
-        case 16:  std::cout << "钥   "; break;
-        case 104: std::cout << "你   "; break;
+        case WALL:         std::cout << "##  "; break;
+        case SPACE:        std::cout << "__  "; break;
+        case LAVA:         std::cout << "岩  "; break;
+        case DOOR:         std::cout << "门  "; break;
+        case UP_BLOCK:     std::cout << "↑↑  "; break;
+        case DOWN_BLOCK:   std::cout << "↓↓  "; break;
+        case SLIME:        std::cout << "史  "; break;
+        case SKELETON:     std::cout << "骷  "; break;
+        case BAT:          std::cout << "蝠  "; break;
+        case APOSTLE:      std::cout << "使  "; break;
+        case BEELZEBUB:    std::cout << "王  "; break;
+        case SMALL_BOTTLE: std::cout << "小  "; break;
+        case BIG_BOTTLE:   std::cout << "大  "; break;
+        case SWORD:        std::cout << "剑  "; break;
+        case SHIELD:       std::cout << "盾  "; break;
+        case LIFE_GEM:     std::cout << "石  "; break;
+        case KEY:          std::cout << "钥  "; break;
+        case HERO:         std::cout << "你  "; break;
         // clang-format on
       }
       if (j == 9)

@@ -63,7 +63,9 @@ Here is the way you can operate the hero:
 
 
 ## TODO
+- [ ] refactor with classes
 - [ ] GUI
+    - [ ] pop-up to choose whether fight with monsters and whether open doors
 - [ ] better maps
 - [ ] custom keys
 - [ ] more monsters and more objects

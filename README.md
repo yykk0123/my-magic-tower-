@@ -61,3 +61,9 @@ Here is the way you can operate the hero:
 | shield             | add 10 defence                             |
 | life gem           | add 50 hp limit                            |
 
+
+## TODO
+- [ ] GUI
+- [ ] better maps
+- [ ] custom keys
+- [ ] more monsters and more objects

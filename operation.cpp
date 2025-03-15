@@ -134,10 +134,10 @@ int battle(struct player *hero, int monster_type) {
   struct monster mst;
   switch (monster_type) {
     // clang-format off
-    case SLIME: mst=slime; break;
-    case SKELETON: mst=skeleton; break;
-    case BAT: mst=bat; break;
-    case APOSTLE: mst=apostle; break;
+    case SLIME:     mst=slime;     break;
+    case SKELETON:  mst=skeleton;  break;
+    case BAT:       mst=bat;       break;
+    case APOSTLE:   mst=apostle;   break;
     case BEELZEBUB: mst=beelzebub; break;
     // clang-format on
   }
@@ -145,25 +145,23 @@ int battle(struct player *hero, int monster_type) {
   int attack = hero->attack - mst.defence;
   int hurt = mst.attack - hero->defence;
 
-  if (attack <= 0 && hurt <= 0)
+  if (attack <= 0 && hurt <= 0) // they can't hurt each other
     return 0;
-  else if (attack <= 0)
-    hero->hp -= hurt * ROUND;
-  else if (hurt <= 0)
-    mst.hp -= attack * ROUND;
-  else
-    for (int round = 0; round < ROUND; round++) {
 
+  else if (attack <= 0) // hero can't attack monsters
+    hero->hp -= hurt * ROUND;
+
+  else if (hurt <= 0) // monsters can't hurt hero
+    mst.hp -= attack * ROUND * (mst.SKILL == MENTAL_POLLUTION ? 2 / 3 : 1);
+
+  else // they can hurt each other
+    for (int round = 0; round < ROUND && hero->hp > 0 && mst.hp > 0; round++) {
+      if (mst.SKILL == MENTAL_POLLUTION && round % 3 == 0)
+        mst.hp += attack; // hero is interfered and can't attack monsters
       mst.hp -= attack;
-      if (mst.hp <= 0) {
-        hero->score += mst.score;
-        if (monster_type == BEELZEBUB)
-          win = 1;
-        return 1; // defeat the monster
-      }
       hero->hp -= hurt;
-      if (hero->hp <= 0)
-        return 0;
+      if (mst.SKILL == BLOODSUCKING)
+        mst.hp += hurt; // monsters can suck blood if have the skill
     }
 
   if (mst.hp <= 0) {

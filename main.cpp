@@ -13,6 +13,7 @@
 
 void initialize() {
   CLEAR;
+  win = 0;
   hero = {
       "", // name
       50, // hp

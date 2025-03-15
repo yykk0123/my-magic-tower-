@@ -1,11 +1,15 @@
 #include <cctype>
 #include <cstdlib>
 #include <iostream>
-#include<conio.h>
+
+#ifdef __linux__
+#include "getch.cpp"
+#else
+#include <conio.h>
+#endif // __linux__
 
 #include "elements.hpp"
 #include "operation.hpp"
-
 
 void initialize() {
   CLEAR;
@@ -34,37 +38,40 @@ void initialize() {
 }
 
 void key_enter() {
+#ifdef __linux__
+  char input_order = toupper(getch());
+#else
   char input_order = toupper(_getch());
-  if(hero.hp>0)
-  {
-  switch (input_order) {
-  case 'A':
-    move(&hero, LEFT);
-    break;
-  case 'D':
-    move(&hero, RIGHT);
-    break;
-  case 'W':
-    move(&hero, UP);
-    break;
-  case 'S':
-    move(&hero, DOWN);
-    break;
-  case 'Q':
-    use_bottle(&hero, 1);
-    break;
-  case 'E':
-    use_bottle(&hero, 0);
-    break;
-  case 'X':
-    print_monster_information();
-    return; // don't print map and other informations
-  case 'Z':
-    exit(EXIT_SUCCESS);
-    break;
+#endif // __linux__
+  if (hero.hp > 0) {
+    switch (input_order) {
+    case 'A':
+      move(&hero, LEFT);
+      break;
+    case 'D':
+      move(&hero, RIGHT);
+      break;
+    case 'W':
+      move(&hero, UP);
+      break;
+    case 'S':
+      move(&hero, DOWN);
+      break;
+    case 'Q':
+      use_bottle(&hero, 1);
+      break;
+    case 'E':
+      use_bottle(&hero, 0);
+      break;
+    case 'X':
+      print_monster_information();
+      return; // don't print map and other informations
+    case 'Z':
+      exit(EXIT_SUCCESS);
+      break;
+    }
   }
-  }
-  if(input_order=='R'){
+  if (input_order == 'R') {
     CLEAR;
     initialize();
     return; // don't print map and other informations

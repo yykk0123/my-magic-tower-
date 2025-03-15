@@ -13,3 +13,6 @@ add_executable(${PROJECT_NAME}
   elements.cpp
   operation.cpp
 )
+
+# Set the output directory for executables
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR})

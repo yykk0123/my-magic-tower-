@@ -39,11 +39,7 @@ void initialize() {
 }
 
 void key_enter() {
-#ifdef __linux__
-  char input_order = toupper(getch());
-#else
   char input_order = toupper(_getch());
-#endif // __linux__
   if (hero.hp > 0) {
     switch (input_order) {
     case 'A':

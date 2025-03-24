@@ -62,6 +62,8 @@ void key_enter() {
       break;
     case 'X':
       print_monster_information();
+      std::cout << "\n" << "press any key to continue...";
+      _getch();
       return; // don't print map and other informations
     case 'R':
       CLEAR;

@@ -280,8 +280,5 @@ void print_monster_information() {
             << "攻击力：" << beelzebub.attack << "\n"
             << "防御力：" << beelzebub.defence << "\n"
             << "特殊属性：无\n"
-            << "本层数量：" << monster_quantity[4] << "\n"
-            << "\n"
-            << "press any key to continue...";
-  getchar();
+            << "本层数量：" << monster_quantity[4] << "\n";
 }

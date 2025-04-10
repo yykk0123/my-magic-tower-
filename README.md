@@ -12,7 +12,6 @@ Now, the brave hero, install the game and defeat the Beelzebub!
 
 ## Operations
 Here is the way you can operate the hero:
-(limited by technology, you have to press `Enter` whenever you operate)
 
 | Key | Operation                   |
 |-----|-----------------------------|

@@ -1,92 +1,86 @@
-#include <cctype>
-#include <cstdlib>
-#include <iostream>
-
-#ifdef __linux__
-#include "getch.cpp"
-#else
-#include <conio.h>
-#endif // __linux__
-
 #include "elements.hpp"
+#include "gui.hpp"
 #include "operation.hpp"
 
 void initialize() {
-  CLEAR;
-  win = 0;
+  end = 0;
   hero = {
-      "", // name
-      50, // hp
-      50, // hp_limit
-      5,  // attack
-      20, // defence
+      "yykk", // name
+      50,     // hp
+      50,     // hp_limit
+      5,      // attack
+      20,     // defence
   };
-  std::cout << "请输入你的名字：";
-  std::cin >> hero.name;
+  // std::cout << "请输入你的名字：";
+  // std::cin >> hero.name;
 
   // set current map to the origin
-  for (int i = 0; i < LAYERS; i++) {
-    for (int j = 0; j < HEIGHT; j++) {
-      for (int k = 0; k < WIDTH; k++) {
+  for (int i = 0; i < LAYERS; i++)
+    for (int j = 0; j < HEIGHT; j++)
+      for (int k = 0; k < WIDTH; k++)
         map[i][j][k] = map_original[i][j][k];
-      }
-    }
-  }
 
   // initialize hero's location
   hero.lct.floor = 0;
   update_hero_location(&hero);
 }
 
-void key_enter() {
-  char input_order = toupper(_getch());
-  if (hero.hp > 0) {
-    switch (input_order) {
-    case 'A':
-      move(&hero, LEFT);
-      break;
-    case 'D':
-      move(&hero, RIGHT);
-      break;
-    case 'W':
-      move(&hero, UP);
-      break;
-    case 'S':
-      move(&hero, DOWN);
-      break;
-    case 'Q':
-      use_bottle(&hero, 1);
-      break;
-    case 'E':
-      use_bottle(&hero, 0);
-      break;
-    case 'X':
-      print_monster_information();
-      std::cout << "\n" << "press any key to continue...";
-      _getch();
-      return; // don't print map and other informations
-    case 'R':
-      CLEAR;
-      initialize();
-      return; // don't print map and other informations
-    case 'Z':
-      exit(EXIT_SUCCESS);
-      break;
+int main() {
+  // Game initialize
+  initialize();
+
+  // Start up SDL and create window
+  if (!init()) {
+    printf("Failed to initialize!\n");
+    exit(EXIT_FAILURE);
+  }
+
+  // Load media
+  if (!loadMedia()) {
+    printf("Failed to load media!\n");
+    exit(EXIT_FAILURE);
+  }
+
+  SDL_Event e;
+  bool quit = false;
+  while (quit == false) {
+    while (SDL_PollEvent(&e)) {
+      if (e.type == SDL_QUIT)
+        quit = true;
+      else if (e.type == SDL_KEYDOWN) {
+        switch (e.key.keysym.sym) {
+        // move or use bottles only when not ended
+        case SDLK_a:
+          end == 0 && move(&hero, LEFT);
+          break;
+        case SDLK_d:
+          end == 0 && move(&hero, RIGHT);
+          break;
+        case SDLK_w:
+          end == 0 && move(&hero, UP);
+          break;
+        case SDLK_s:
+          end == 0 && move(&hero, DOWN);
+          break;
+        case SDLK_q:
+          end == 0 && use_bottle(&hero, 1);
+          break;
+        case SDLK_e:
+          end == 0 && use_bottle(&hero, 0);
+          break;
+        case SDLK_r:
+          initialize();
+          break;
+        case SDLK_z:
+          return EXIT_SUCCESS;
+          break;
+        }
+      }
+      display();
     }
   }
-  if (input_order == 'R') {
-    CLEAR;
-    initialize();
-    return; // don't print map and other informations
-  } else if (input_order == 'Z')
-    exit(EXIT_SUCCESS);
-  print_screen();
-}
 
-int main() {
-  initialize();
-  while (1) {
-    key_enter();
-  }
+  // Free resources and close SDL
+  close();
   return 0;
 }

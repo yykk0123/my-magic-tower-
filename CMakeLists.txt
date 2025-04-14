@@ -1,18 +1,27 @@
-#Define the minimum version of CMake required
 cmake_minimum_required(VERSION 3.10)
-
-# Define the project name
 project(MAGIC_TOWER)
 
-# Set the C++ standard
-set(CMAKE_CXX_STANDDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
-# Add source files to the project
-add_executable(${PROJECT_NAME}
-  main.cpp
-  elements.cpp
-  operation.cpp
-)
+# Use pkg-config to find SDL2 and SDL2_image
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SDL2 REQUIRED sdl2)
+pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
+pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 
-# Set the output directory for executables
+# Add source files
+add_executable(${PROJECT_NAME} main.cpp elements.cpp operation.cpp gui.cpp)
+
+# Include directories
+include_directories(${SDL2_INCLUDE_DIRS}
+                    ${SDL2_IMAGE_INCLUDE_DIRS}${SDL2_TTF_INCLUDE_DIRS})
+
+# # Link directories (usually optional on Linux but safe to add)
+# link_directories(${SDL2_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS})
+
+# Link libraries
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES}
+                      ${SDL2_TTF_LIBRARIES})
+
+# Set output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR})

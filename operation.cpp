@@ -1,11 +1,10 @@
 #include <cstdio>
 #include <cstdlib>
-#include <iostream>
 
 #include "elements.hpp"
 #include "operation.hpp"
 
-int win = 0; // win or continue?
+int end = 0; // 0 for not ended, 1 for win, -1 for lose
 
 void update_hero_location(struct player *hero) {
   // get the location of the hero originally
@@ -41,7 +40,7 @@ void update_hero_location(struct player *hero) {
   }
 
 // direction can be UP, DOWN, LEFT, or RIGHT
-void move(struct player *hero, int direction) {
+int move(struct player *hero, int direction) {
   int *current_block = &map[hero->lct.floor][hero->lct.y][hero->lct.x];
   int dx = (direction == LEFT) ? -1 : ((direction == RIGHT) ? 1 : 0);
   int dy = (direction == DOWN) ? 1 : ((direction == UP) ? -1 : 0);
@@ -108,24 +107,28 @@ void move(struct player *hero, int direction) {
     move_forward();
     break;
   }
+
+  return 0;
 }
 
 // use the small bottle if small==1 else big bottle
-void use_bottle(struct player *hero, int small) {
+int use_bottle(struct player *hero, int small) {
   if (small) {
     if (hero->small_bottle == 0)
-      return;
+      return -1;
     hero->small_bottle -= 1;
     hero->hp += 10;
   } else {
     if (hero->big_bottle == 0)
-      return;
+      return -1;
     hero->big_bottle -= 1;
     hero->hp += 25;
   }
 
   if (hero->hp > hero->hp_limit)
     hero->hp = hero->hp_limit;
+
+  return 0;
 }
 
 // fight with the monster, return 1 if win, else 0
@@ -146,16 +149,20 @@ int battle(struct player *hero, int monster_type) {
   int attack = hero->attack - mst.defence;
   int hurt = mst.attack - hero->defence;
 
-  if (attack <= 0 && hurt <= 0) // they can't hurt each other
+  // they can't hurt each other
+  if (attack <= 0 && hurt <= 0)
     return 0;
 
-  else if (attack <= 0) // hero can't attack monsters
+  // hero can't attack monsters
+  else if (attack <= 0)
     hero->hp -= hurt * ROUND;
 
-  else if (hurt <= 0) // monsters can't hurt hero
+  // monsters can't hurt hero
+  else if (hurt <= 0)
     mst.hp -= attack * ROUND * (mst.SKILL == MENTAL_POLLUTION ? 2 / 3 : 1);
 
-  else // they can hurt each other
+  // they can hurt each other
+  else
     for (int round = 1; round < ROUND && hero->hp > 0 && mst.hp > 0; round++) {
       if (mst.SKILL == MENTAL_POLLUTION && round % 3 == 0)
         mst.hp += attack; // hero is interfered and can't attack monsters
@@ -168,117 +175,10 @@ int battle(struct player *hero, int monster_type) {
   if (mst.hp <= 0) {
     hero->score += mst.score;
     if (monster_type == BEELZEBUB)
-      win = 1;
+      end = 1;
     return 1; // defeat the monster
+  } else if (hero->hp <= 0) {
+    end = -1;
   }
   return 0;
-}
-
-// print floor number, key number, map and properties
-void print_screen() {
-  CLEAR;
-  std::cout << "第 " << hero.lct.floor + 1 << " 层\n";
-  std::cout << "钥匙数 " << hero.key << '\n';
-  for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 10; j++) {
-      switch (map[hero.lct.floor][i][j]) {
-        // clang-format off
-        case WALL:         std::cout << "##  "; break;
-        case SPACE:        std::cout << "__  "; break;
-        case LAVA:         std::cout << "岩  "; break;
-        case DOOR:         std::cout << "门  "; break;
-        case UP_BLOCK:     std::cout << "↑↑  "; break;
-        case DOWN_BLOCK:   std::cout << "↓↓  "; break;
-        case SLIME:        std::cout << "史  "; break;
-        case SKELETON:     std::cout << "骷  "; break;
-        case BAT:          std::cout << "蝠  "; break;
-        case APOSTLE:      std::cout << "使  "; break;
-        case BEELZEBUB:    std::cout << "王  "; break;
-        case SMALL_BOTTLE: std::cout << "小  "; break;
-        case BIG_BOTTLE:   std::cout << "大  "; break;
-        case SWORD:        std::cout << "剑  "; break;
-        case SHIELD:       std::cout << "盾  "; break;
-        case LIFE_GEM:     std::cout << "石  "; break;
-        case KEY:          std::cout << "钥  "; break;
-        case HERO:         std::cout << "你  "; break;
-        // clang-format on
-      }
-      if (j == 9)
-        std::cout << '\n';
-    }
-  }
-  std::cout << "名字：" << hero.name << '\n'
-            << "生命值：" << hero.hp << '\n'
-            << "生命值上限：" << hero.hp_limit << '\n'
-            << "防御力：" << hero.defence << '\n'
-            << "攻击力：" << hero.attack << '\n'
-            << "小血瓶：" << hero.small_bottle << '\n'
-            << "大血瓶：" << hero.big_bottle << '\n'
-            << "分数：" << hero.score << '\n';
-
-  if (hero.hp <= 0)
-    std::cout << "胜败乃兵家常事，大侠请重新来过  " << '\n'
-              << "Your final score is: " << hero.score << '\n'
-              << "press 'R' to restart, 'Z' to exit...\n";
-
-  if (win) {
-    std::cout << "你赢了！！！" << '\n'
-              << "Your final score is: " << hero.score << '\n'
-              << "press 'R' to restart, 'Z' to exit...\n";
-  }
-}
-
-// print monsters' properties and numbers on current floor
-void print_monster_information() {
-  CLEAR;
-  // count monsters
-  int monster_quantity[5] = {};
-  for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 10; j++) {
-      switch (map[hero.lct.floor][i][j]) {
-        // clang-format off
-      case SLIME:     monster_quantity[0]++; break;
-      case SKELETON:  monster_quantity[1]++; break;
-      case BAT:       monster_quantity[2]++; break;
-      case APOSTLE:   monster_quantity[3]++; break;
-      case BEELZEBUB: monster_quantity[4]++; break;
-        // clang-format on
-      }
-    }
-  }
-
-  std::cout << "名字：史莱姆酱\n"
-            << "生命值：" << slime.hp << "\n"
-            << "攻击力：" << slime.attack << "\n"
-            << "防御力：" << slime.defence << "\n"
-            << "特殊属性：无\n"
-            << "本层数量：" << monster_quantity[0] << "\n"
-            << "\n"
-            << "名字：骷髅士兵\n"
-            << "生命值：" << skeleton.hp << "\n"
-            << "攻击力：" << skeleton.attack << "\n"
-            << "防御力：" << skeleton.defence << "\n"
-            << "特殊属性：无\n"
-            << "本层数量：" << monster_quantity[1] << "\n"
-            << "\n"
-            << "名字：吸血蝙蝠\n"
-            << "生命值：" << bat.hp << "\n"
-            << "攻击力：" << bat.attack << "\n"
-            << "防御力：" << bat.defence << "\n"
-            << "特殊属性：吸血\n"
-            << "本层数量：" << monster_quantity[2] << "\n"
-            << "\n"
-            << "名字：深渊使徒\n"
-            << "生命值：" << apostle.hp << "\n"
-            << "攻击力：" << apostle.attack << "\n"
-            << "防御力：" << apostle.defence << "\n"
-            << "特殊属性：精神污染\n"
-            << "本层数量：" << monster_quantity[3] << "\n"
-            << "\n"
-            << "名字：魔王\n"
-            << "生命值：" << beelzebub.hp << "\n"
-            << "攻击力：" << beelzebub.attack << "\n"
-            << "防御力：" << beelzebub.defence << "\n"
-            << "特殊属性：无\n"
-            << "本层数量：" << monster_quantity[4] << "\n";
 }

@@ -1,3 +1,5 @@
 a.out
+./compile_commands.json
 MAGIC_TOWER
 build/
+.cache/

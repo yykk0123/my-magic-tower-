@@ -22,7 +22,6 @@ Here is the way you can operate the hero:
 |  Q  | use the small bottle        |
 |  E  | use the big bottle          |
 |  R  | restart the game            |
-|  X  | show monsters' informations |
 |  Z  | exit the game               |
 
 
@@ -63,7 +62,7 @@ Here is the way you can operate the hero:
 
 ## TODO
 - [ ] refactor with classes
-- [ ] GUI
+- [x] GUI
     - [ ] pop-up to choose whether fight with monsters and whether open doors
 - [ ] better maps
 - [ ] custom keys

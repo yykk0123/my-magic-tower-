@@ -12,7 +12,10 @@
 
 #include "elements.hpp"
 #include "gui.hpp"
-#include "operation.hpp"
+#include "map.hpp"
+
+#define WIDTH 10
+#define HEIGHT 10
 
 SDL_Window *gWindow = NULL;
 
@@ -253,7 +256,7 @@ static std::string monster_info() {
   int monster_quantity[5] = {};
   for (int i = 0; i < 10; i++)
     for (int j = 0; j < 10; j++)
-      switch (map[hero.lct.floor][i][j]) {
+      switch (map[hero.getFloor()][i][j]) {
       case SLIME:
         monster_quantity[0]++;
         break;
@@ -273,37 +276,37 @@ static std::string monster_info() {
 
   std::stringstream ss;
   ss << "名字：史莱姆酱\n"
-     << "生命值：" << slime.hp << "\n"
-     << "攻击力：" << slime.attack << "\n"
-     << "防御力：" << slime.defence << "\n"
+     << "生命值：" << slime.getHp() << "\n"
+     << "攻击力：" << slime.getAttack() << "\n"
+     << "防御力：" << slime.getDefence() << "\n"
      << "特殊属性：无\n"
      << "本层数量：" << monster_quantity[0] << "\n"
      << "\n"
      << "名字：骷髅士兵\n"
-     << "生命值：" << skeleton.hp << "\n"
-     << "攻击力：" << skeleton.attack << "\n"
-     << "防御力：" << skeleton.defence << "\n"
+     << "生命值：" << skeleton.getHp() << "\n"
+     << "攻击力：" << skeleton.getAttack() << "\n"
+     << "防御力：" << skeleton.getDefence() << "\n"
      << "特殊属性：无\n"
      << "本层数量：" << monster_quantity[1] << "\n"
      << "\n"
      << "名字：吸血蝙蝠\n"
-     << "生命值：" << bat.hp << "\n"
-     << "攻击力：" << bat.attack << "\n"
-     << "防御力：" << bat.defence << "\n"
+     << "生命值：" << bat.getHp() << "\n"
+     << "攻击力：" << bat.getAttack() << "\n"
+     << "防御力：" << bat.getDefence() << "\n"
      << "特殊属性：吸血\n"
      << "本层数量：" << monster_quantity[2] << "\n"
      << "\n"
      << "名字：深渊使徒\n"
-     << "生命值：" << apostle.hp << "\n"
-     << "攻击力：" << apostle.attack << "\n"
-     << "防御力：" << apostle.defence << "\n"
+     << "生命值：" << apostle.getHp() << "\n"
+     << "攻击力：" << apostle.getAttack() << "\n"
+     << "防御力：" << apostle.getDefence() << "\n"
      << "特殊属性：精神污染\n"
      << "本层数量：" << monster_quantity[3] << "\n"
      << "\n"
      << "名字：魔王\n"
-     << "生命值：" << beelzebub.hp << "\n"
-     << "攻击力：" << beelzebub.attack << "\n"
-     << "防御力：" << beelzebub.defence << "\n"
+     << "生命值：" << beelzebub.getHp() << "\n"
+     << "攻击力：" << beelzebub.getAttack() << "\n"
+     << "防御力：" << beelzebub.getDefence() << "\n"
      << "特殊属性：无\n"
      << "本层数量：" << monster_quantity[4] << "\n";
 

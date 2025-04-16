@@ -1,28 +1,28 @@
 #include "elements.hpp"
 #include "gui.hpp"
-#include "operation.hpp"
+#include "hero.hpp"
+#include "map.hpp"
+
+extern Hero hero;
+
+extern Map map_original, map;
 
 void initialize() {
   end = 0;
-  hero = {
-      "yykk", // name
-      50,     // hp
-      50,     // hp_limit
-      5,      // attack
-      20,     // defence
-  };
+  hero = Hero("yykk", // name
+              50,     // hp_limit
+              5,      // attack
+              20,     // defence
+              NONE,   // skill
+  );
   // std::cout << "请输入你的名字：";
   // std::cin >> hero.name;
 
-  // set current map to the origin
-  for (int i = 0; i < LAYERS; i++)
-    for (int j = 0; j < HEIGHT; j++)
-      for (int k = 0; k < WIDTH; k++)
-        map[i][j][k] = map_original[i][j][k];
+  map(map_original);
 
   // initialize hero's location
-  hero.lct.floor = 0;
-  update_hero_location(&hero);
+  hero.setFloor(0);
+  hero.update_hero_location();
 }
 
 int main() {

@@ -2,31 +2,6 @@
 #define _ELEMENTS_HPP_
 
 #include "monster.hpp"
-#include <string>
-
-// map size and layers
-#define WIDTH 10
-#define HEIGHT 10
-#define LAYERS 2
-
-struct player {
-  std::string name;
-  int hp;
-  int hp_limit;
-  int defence;
-  int attack;
-  int score;
-  int key;
-  int small_bottle;
-  int big_bottle;
-  struct location {
-    int x;
-    int y;
-    int floor;
-  } lct;
-};
-
-extern struct player hero;
 
 extern Monster slime, skeleton, bat, apostle, beelzebub;
 
@@ -54,7 +29,5 @@ enum elements {
   KEY,
   HERO,
 };
-
-extern int map_original[LAYERS][HEIGHT][WIDTH], map[LAYERS][HEIGHT][WIDTH];
 
 #endif // _ELEMENTS_HPP_

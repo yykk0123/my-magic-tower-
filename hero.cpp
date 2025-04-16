@@ -13,3 +13,10 @@ Hero::Hero(const char *name, int hp_limit, int attack, int defence,
   small_bottle = 0;
   big_bottle = 0;
 }
+
+int Hero::move(Map &map) { return 0; }
+
+int battle(Monster &monster);
+int use_samll_bottle();
+int use_big_bottle();
+void update_hero_location(Map &map);

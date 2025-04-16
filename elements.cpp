@@ -8,40 +8,44 @@ struct player hero = {
     20, // defence
 };
 
-struct monster slime = {10, 5, 5, 5, NONE};
-struct monster skeleton = {16, 8, 8, 8, NONE};
-struct monster bat = {25, 15, 0, 10, BLOODSUCKING};
-struct monster apostle = {50, 30, 15, 25, MENTAL_POLLUTION};
-struct monster beelzebub = {100, 25, 15, 100, NONE};
+Monster slime("slime", 10, 5, 5, 5, NONE);
+Monster skeleton("skeleton", 16, 8, 8, 8, NONE);
+Monster bat("bat", 25, 15, 0, 10, BLOODSUCKING);
+Monster apostle("apostle", 50, 30, 15, 25, MENTAL_POLLUTION);
+Monster beelzebub("beelzebub", 100, 25, 15, 100, NONE);
 
-int map_original[LAYERS][HEIGHT][WIDTH] = {
-    // clang-format off
-    {
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-        0, 104, 1, 2, 11, 12, 13, 14, 15, 0,
-        0, 1,   4, 9, 8,  7,  6,  3,  16, 0,
-        0, 10,  0, 0, 0,  0,  0,  0,  0,  0,
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-        0, 0,   0, 0, 0,  0,  0,  0,  0,  0,
-    },
-    {
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 104, 1, 1, 1, 10, 0, 0, 0, 0,
-        0, 5,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-        0, 0,   0, 0, 0, 0,  0, 0, 0, 0,
-    },
-    // clang-format on
-};
-
-// will copy from map_original in `initialize()`
-int map[LAYERS][HEIGHT][WIDTH] = {};
+// int map_original[LAYERS][HEIGHT][WIDTH] = {
+//     // clang-format off
+//     {
+//         WALL, WALL,  WALL,     WALL,    WALL,         WALL,       WALL, WALL,
+//         WALL,     WALL, WALL, HERO,  SPACE,    LAVA,    SMALL_BOTTLE,
+//         BIG_BOTTLE, SWORD, SHIELD, LIFE_GEM, WALL, WALL, SPACE, UP_BLOCK,
+//         APOSTLE, BAT,          SKELETON,   SLIME, DOOR,   KEY,      WALL,
+//         WALL, WALL,  WALL,     WALL,    WALL,         WALL,       WALL, WALL,
+//         WALL,     WALL, WALL, WALL,  WALL,     WALL,    WALL,         WALL,
+//         WALL,  WALL,   WALL,     WALL, WALL, WALL,  WALL,     WALL,    WALL,
+//         WALL,       WALL,  WALL,   WALL,     WALL, WALL, WALL,  WALL, WALL,
+//         WALL,         WALL,       WALL,  WALL,   WALL,     WALL, WALL, WALL,
+//         WALL,     WALL,    WALL,         WALL,       WALL,  WALL,   WALL,
+//         WALL, WALL, WALL,  WALL,     WALL,    WALL,         WALL,       WALL,
+//         WALL,   WALL,     WALL, WALL, WALL,  WALL,     WALL,    WALL, WALL,
+//         WALL,  WALL,   WALL,     WALL,
+//     },
+//     {
+//         WALL, WALL,       WALL,  WALL,  WALL,  WALL,      WALL, WALL, WALL,
+//         WALL, WALL, HERO,       SPACE, SPACE, SPACE, BEELZEBUB, WALL, WALL,
+//         WALL, WALL, WALL, DOWN_BLOCK, WALL,  WALL,  WALL,  WALL,      WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL, WALL, WALL,       WALL,  WALL,  WALL,  WALL, WALL,
+//         WALL, WALL, WALL,
+//     },
+//     // clang-format on
+// };
+//
+// // will copy from map_original in `initialize()`
+// int map[LAYERS][HEIGHT][WIDTH] = {};

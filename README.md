@@ -61,9 +61,15 @@ Here is the way you can operate the hero:
 
 
 ## TODO
+### content
+- [ ] better maps
+- [ ] more monsters and more objects
+- [ ] hero's skill and grading
+### code
 - [ ] refactor with classes
+### interface
 - [x] GUI
     - [ ] pop-up to choose whether fight with monsters and whether open doors
-- [ ] better maps
+    - [ ] magic tower texture
+### operation
 - [ ] custom keys
-- [ ] more monsters and more objects

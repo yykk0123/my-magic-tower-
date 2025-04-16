@@ -1,3 +1,6 @@
+#ifndef _GUI_HPP_
+#define _GUI_HPP_
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -61,3 +64,5 @@ bool loadMedia();
 void close();
 
 void display();
+
+#endif // !_GUI_HPP_

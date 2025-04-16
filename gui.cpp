@@ -168,29 +168,30 @@ bool init() {
 }
 
 bool loadMedia() {
-  if (!(gTextureWall.loadFromFile("image/80x80/wall.png") &&
-        gTextureSpace.loadFromFile("image/80x80/space.png") &&
-        gTextureLava.loadFromFile("image/80x80/lava.png") &&
-        gTextureDoor.loadFromFile("image/80x80/door.png") &&
-        gTextureUpBlock.loadFromFile("image/80x80/up_block.png") &&
-        gTextureDownBlock.loadFromFile("image/80x80/down_block.png") &&
-        gTextureSlime.loadFromFile("image/80x80/slime.png") &&
-        gTextureSkeleton.loadFromFile("image/80x80/skeleton.png") &&
-        gTextureBat.loadFromFile("image/80x80/bat.png") &&
-        gTextureApostle.loadFromFile("image/80x80/apostle.png") &&
-        gTextureBeelzebub.loadFromFile("image/80x80/beelzebub.png") &&
-        gTextureSmallBottle.loadFromFile("image/80x80/small_bottle.png") &&
-        gTextureBigBottle.loadFromFile("image/80x80/big_bottle.png") &&
-        gTextureSword.loadFromFile("image/80x80/sword.png") &&
-        gTextureShield.loadFromFile("image/80x80/shield.png") &&
-        gTextureLifeGem.loadFromFile("image/80x80/life_gem.png") &&
-        gTextureKey.loadFromFile("image/80x80/key.png") &&
-        gTextureHero.loadFromFile("image/80x80/hero.png"))) {
+  if (!(gTextureWall.loadFromFile("assets/image/80x80/wall.png") &&
+        gTextureSpace.loadFromFile("assets/image/80x80/space.png") &&
+        gTextureLava.loadFromFile("assets/image/80x80/lava.png") &&
+        gTextureDoor.loadFromFile("assets/image/80x80/door.png") &&
+        gTextureUpBlock.loadFromFile("assets/image/80x80/up_block.png") &&
+        gTextureDownBlock.loadFromFile("assets/image/80x80/down_block.png") &&
+        gTextureSlime.loadFromFile("assets/image/80x80/slime.png") &&
+        gTextureSkeleton.loadFromFile("assets/image/80x80/skeleton.png") &&
+        gTextureBat.loadFromFile("assets/image/80x80/bat.png") &&
+        gTextureApostle.loadFromFile("assets/image/80x80/apostle.png") &&
+        gTextureBeelzebub.loadFromFile("assets/image/80x80/beelzebub.png") &&
+        gTextureSmallBottle.loadFromFile(
+            "assets/image/80x80/small_bottle.png") &&
+        gTextureBigBottle.loadFromFile("assets/image/80x80/big_bottle.png") &&
+        gTextureSword.loadFromFile("assets/image/80x80/sword.png") &&
+        gTextureShield.loadFromFile("assets/image/80x80/shield.png") &&
+        gTextureLifeGem.loadFromFile("assets/image/80x80/life_gem.png") &&
+        gTextureKey.loadFromFile("assets/image/80x80/key.png") &&
+        gTextureHero.loadFromFile("assets/image/80x80/hero.png"))) {
     printf("Failed to load texture image!\n");
     return false;
   }
 
-  if ((gFont = TTF_OpenFont("image/wqy-zenhei.ttc", 32)) == NULL) {
+  if ((gFont = TTF_OpenFont("assets/wqy-zenhei.ttc", 32)) == NULL) {
     printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
     return false;
   }

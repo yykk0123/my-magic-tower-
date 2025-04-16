@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(MAGIC_TOWER)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # Use pkg-config to find SDL2 and SDL2_image
 find_package(PkgConfig REQUIRED)
@@ -10,7 +10,8 @@ pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 
 # Add source files
-add_executable(${PROJECT_NAME} main.cpp elements.cpp operation.cpp gui.cpp)
+add_executable(${PROJECT_NAME} main.cpp elements.cpp operation.cpp gui.cpp
+                               map.cpp)
 
 # Include directories
 include_directories(${SDL2_INCLUDE_DIRS}

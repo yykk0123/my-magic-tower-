@@ -49,32 +49,59 @@ int main() {
         quit = true;
       else if (e.type == SDL_KEYDOWN) {
         switch (e.key.keysym.sym) {
-        // move or use bottles only when not ended
+
+          // colemake layout
         case SDLK_a:
           end == 0 && move(&hero, LEFT);
           break;
-        case SDLK_d:
+        case SDLK_s:
           end == 0 && move(&hero, RIGHT);
           break;
         case SDLK_w:
           end == 0 && move(&hero, UP);
           break;
-        case SDLK_s:
+        case SDLK_r:
           end == 0 && move(&hero, DOWN);
           break;
         case SDLK_q:
           end == 0 && use_bottle(&hero, 1);
           break;
-        case SDLK_e:
+        case SDLK_f:
           end == 0 && use_bottle(&hero, 0);
           break;
-        case SDLK_r:
+        case SDLK_p:
           initialize();
           break;
         case SDLK_z:
           return EXIT_SUCCESS;
           break;
         }
+        // // move or use bottles only when not ended
+        // case SDLK_a:
+        //   end == 0 && move(&hero, LEFT);
+        //   break;
+        // case SDLK_d:
+        //   end == 0 && move(&hero, RIGHT);
+        //   break;
+        // case SDLK_w:
+        //   end == 0 && move(&hero, UP);
+        //   break;
+        // case SDLK_s:
+        //   end == 0 && move(&hero, DOWN);
+        //   break;
+        // case SDLK_q:
+        //   end == 0 && use_bottle(&hero, 1);
+        //   break;
+        // case SDLK_e:
+        //   end == 0 && use_bottle(&hero, 0);
+        //   break;
+        // case SDLK_r:
+        //   initialize();
+        //   break;
+        // case SDLK_z:
+        //   return EXIT_SUCCESS;
+        //   break;
+        // }
       }
       display();
     }

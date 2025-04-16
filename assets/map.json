@@ -1,0 +1,36 @@
+{
+  "width": 10,
+  "height": 10,
+  "tiles": [
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW HR __ __ ky dr __ __ BE WW ",
+    "WW sw sd lg sb bb ap bt WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW ",
+    "WW WW WW WW WW WW WW WW WW WW "
+  ],
+  "legend": {
+    "__ ": "SPACE",
+    "WW ": "WALL",
+    "~~ ": "LAVA",
+    "dr ": "DOOR",
+    ">> ": "UP_BLOCK",
+    "<< ": "DOWN_BLOCK",
+    "sl ": "SLIME",
+    "sk ": "SKELETON",
+    "bt ": "BAT",
+    "ap ": "APOSTLE",
+    "BE ": "BEELZEBUB",
+    "sb ": "SMALL_BOTTLE",
+    "bb ": "BIG_BOTTLE",
+    "sw ": "SWORD",
+    "sd ": "SHIELD",
+    "lg ": "LIFE_GEM",
+    "ky ": "KEY",
+    "HR ": "HERO"
+  }
+}

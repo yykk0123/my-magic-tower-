@@ -1,28 +1,23 @@
-#include "elements.hpp"
+#include "global.hpp"
 #include "gui.hpp"
 #include "hero.hpp"
-#include "map.hpp"
-
-extern Hero hero;
-
-extern Map map_original, map;
+#include "keymap.hpp"
+#include "operation.hpp"
 
 void initialize() {
   end = 0;
-  hero = Hero("yykk", // name
-              50,     // hp_limit
-              5,      // attack
-              20,     // defence
-              NONE,   // skill
-  );
-  // std::cout << "请输入你的名字：";
-  // std::cin >> hero.name;
 
-  map(map_original);
+  // restore the map
+  map = map_original;
 
-  // initialize hero's location
-  hero.setFloor(0);
-  hero.update_hero_location();
+  hero.init("yykk", 50, 20, 5, NONE);
+  hero.update_location();
+
+  slime.init("slime", 10, 5, 5, 5, NONE);
+  skeleton.init("skeleton", 16, 8, 8, 8, NONE);
+  bat.init("bat", 25, 15, 0, 10, BLOODSUCKING);
+  apostle.init("apostle", 50, 30, 15, 25, MENTAL_POLLUTION);
+  beelzebub.init("beelzebub", 100, 25, 15, 100, NONE);
 }
 
 int main() {
@@ -51,57 +46,31 @@ int main() {
         switch (e.key.keysym.sym) {
 
           // colemake layout
-        case SDLK_a:
-          end == 0 && move(&hero, LEFT);
+        case MOVE_LEFT:
+          end == 0 && move(LEFT);
           break;
-        case SDLK_s:
-          end == 0 && move(&hero, RIGHT);
+        case MOVE_RIGHT:
+          end == 0 && move(RIGHT);
           break;
-        case SDLK_w:
-          end == 0 && move(&hero, UP);
+        case MOVE_UP:
+          end == 0 && move(UP);
           break;
-        case SDLK_r:
-          end == 0 && move(&hero, DOWN);
+        case MOVE_DOWN:
+          end == 0 && move(DOWN);
           break;
-        case SDLK_q:
-          end == 0 && use_bottle(&hero, 1);
+        case USE_SMALL_BOTTLE:
+          end == 0 && hero.use_small_bottle();
           break;
-        case SDLK_f:
-          end == 0 && use_bottle(&hero, 0);
+        case USE_BIG_BOTTLE:
+          end == 0 && hero.use_big_bottle();
           break;
-        case SDLK_p:
+        case RESTART:
           initialize();
           break;
-        case SDLK_z:
+        case EXIT_GAME:
           return EXIT_SUCCESS;
           break;
         }
-        // // move or use bottles only when not ended
-        // case SDLK_a:
-        //   end == 0 && move(&hero, LEFT);
-        //   break;
-        // case SDLK_d:
-        //   end == 0 && move(&hero, RIGHT);
-        //   break;
-        // case SDLK_w:
-        //   end == 0 && move(&hero, UP);
-        //   break;
-        // case SDLK_s:
-        //   end == 0 && move(&hero, DOWN);
-        //   break;
-        // case SDLK_q:
-        //   end == 0 && use_bottle(&hero, 1);
-        //   break;
-        // case SDLK_e:
-        //   end == 0 && use_bottle(&hero, 0);
-        //   break;
-        // case SDLK_r:
-        //   initialize();
-        //   break;
-        // case SDLK_z:
-        //   return EXIT_SUCCESS;
-        //   break;
-        // }
       }
       display();
     }

@@ -12,15 +12,6 @@ enum Skill {
 class Role {
 public:
   Role() {}
-  Role(const char *name, int hp, int attack, int defence, int score,
-       Skill skill) {
-    name = name;
-    hp = hp;
-    attack = attack;
-    defence = defence;
-    score = score;
-    skill = skill;
-  };
   ~Role() {}
   int getHp() { return hp; }
   int getAttack() { return attack; }
@@ -28,7 +19,7 @@ public:
   int getScore() { return score; }
   Skill getSkill() { return skill; }
 
-private:
+protected:
   std::string name;
   int hp;
   int attack;

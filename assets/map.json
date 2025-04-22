@@ -1,18 +1,33 @@
 {
   "width": 10,
   "height": 10,
-  "tiles": [
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW HR __ __ ky dr __ __ BE WW ",
-    "WW sw sd lg sb bb ap bt WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW ",
-    "WW WW WW WW WW WW WW WW WW WW "
-  ],
+  "floor": 2,
+  "floors": {
+    "1": [
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW HR __ __ ky dr __ __ BE WW ",
+      "WW sw sd lg sb bb ap bt >> WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW "
+    ],
+    "2": [
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW HR __ __ __ __ __ __ BE WW ",
+      "WW __ << __ __ __ __ __ WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW ",
+      "WW WW WW WW WW WW WW WW WW WW "
+    ]
+  },
   "legend": {
     "__ ": "SPACE",
     "WW ": "WALL",

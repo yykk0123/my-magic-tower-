@@ -51,11 +51,7 @@ extern SDL_Renderer *gRenderer;
 
 extern TTF_Font *gFont;
 
-extern Ltexture gTextureWall, gTextureSpace, gTextureLava, gTextureDoor,
-    gTextureUpBlock, gTextureDownBlock, gTextureSlime, gTextureSkeleton,
-    gTextureBat, gTextureApostle, gTextureBeelzebub, gTextureSmallBottle,
-    gTextureBigBottle, gTextureSword, gTextureShield, gTextureLifeGem,
-    gTextureKey, gTextureHero;
+extern Ltexture gTexture[TOTAL_SUM];
 
 bool init();
 

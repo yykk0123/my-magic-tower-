@@ -10,12 +10,11 @@
 #include <sstream>
 #include <string>
 
-#include "elements.hpp"
+#include "global.hpp"
 #include "gui.hpp"
-#include "map.hpp"
 
-#define WIDTH 10
-#define HEIGHT 10
+#define WIDTH map.getWidth()
+#define HEIGHT map.getHeight()
 
 SDL_Window *gWindow = NULL;
 
@@ -23,11 +22,7 @@ SDL_Renderer *gRenderer = NULL;
 
 TTF_Font *gFont = NULL;
 
-Ltexture gTextureWall, gTextureSpace, gTextureLava, gTextureDoor,
-    gTextureUpBlock, gTextureDownBlock, gTextureSlime, gTextureSkeleton,
-    gTextureBat, gTextureApostle, gTextureBeelzebub, gTextureSmallBottle,
-    gTextureBigBottle, gTextureSword, gTextureShield, gTextureLifeGem,
-    gTextureKey, gTextureHero;
+Ltexture gTexture[TOTAL_SUM];
 
 Ltexture::Ltexture() {
   mTexture = NULL;
@@ -171,30 +166,31 @@ bool init() {
 }
 
 bool loadMedia() {
-  if (!(gTextureWall.loadFromFile("assets/image/80x80/wall.png") &&
-        gTextureSpace.loadFromFile("assets/image/80x80/space.png") &&
-        gTextureLava.loadFromFile("assets/image/80x80/lava.png") &&
-        gTextureDoor.loadFromFile("assets/image/80x80/door.png") &&
-        gTextureUpBlock.loadFromFile("assets/image/80x80/up_block.png") &&
-        gTextureDownBlock.loadFromFile("assets/image/80x80/down_block.png") &&
-        gTextureSlime.loadFromFile("assets/image/80x80/slime.png") &&
-        gTextureSkeleton.loadFromFile("assets/image/80x80/skeleton.png") &&
-        gTextureBat.loadFromFile("assets/image/80x80/bat.png") &&
-        gTextureApostle.loadFromFile("assets/image/80x80/apostle.png") &&
-        gTextureBeelzebub.loadFromFile("assets/image/80x80/beelzebub.png") &&
-        gTextureSmallBottle.loadFromFile(
-            "assets/image/80x80/small_bottle.png") &&
-        gTextureBigBottle.loadFromFile("assets/image/80x80/big_bottle.png") &&
-        gTextureSword.loadFromFile("assets/image/80x80/sword.png") &&
-        gTextureShield.loadFromFile("assets/image/80x80/shield.png") &&
-        gTextureLifeGem.loadFromFile("assets/image/80x80/life_gem.png") &&
-        gTextureKey.loadFromFile("assets/image/80x80/key.png") &&
-        gTextureHero.loadFromFile("assets/image/80x80/hero.png"))) {
+  std::string texture_path = "assets/image/80x80/";
+  if (!(gTexture[WALL].loadFromFile(texture_path + "wall.png") &&
+        gTexture[SPACE].loadFromFile(texture_path + "space.png") &&
+        gTexture[LAVA].loadFromFile(texture_path + "lava.png") &&
+        gTexture[DOOR].loadFromFile(texture_path + "door.png") &&
+        gTexture[UP_BLOCK].loadFromFile(texture_path + "up_block.png") &&
+        gTexture[DOWN_BLOCK].loadFromFile(texture_path + "down_block.png") &&
+        gTexture[SLIME].loadFromFile(texture_path + "slime.png") &&
+        gTexture[SKELETON].loadFromFile(texture_path + "skeleton.png") &&
+        gTexture[BAT].loadFromFile(texture_path + "bat.png") &&
+        gTexture[APOSTLE].loadFromFile(texture_path + "apostle.png") &&
+        gTexture[BEELZEBUB].loadFromFile(texture_path + "beelzebub.png") &&
+        gTexture[SMALL_BOTTLE].loadFromFile(texture_path +
+                                            "small_bottle.png") &&
+        gTexture[BIG_BOTTLE].loadFromFile(texture_path + "big_bottle.png") &&
+        gTexture[SWORD].loadFromFile(texture_path + "sword.png") &&
+        gTexture[SHIELD].loadFromFile(texture_path + "shield.png") &&
+        gTexture[LIFE_GEM].loadFromFile(texture_path + "life_gem.png") &&
+        gTexture[KEY].loadFromFile(texture_path + "key.png") &&
+        gTexture[HERO].loadFromFile(texture_path + "hero.png"))) {
     printf("Failed to load texture image!\n");
     return false;
   }
 
-  if ((gFont = TTF_OpenFont("assets/wqy-zenhei.ttc", 32)) == NULL) {
+  if ((gFont = TTF_OpenFont("assets/wqy-zenhei.ttc", 28)) == NULL) {
     printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
     return false;
   }
@@ -204,24 +200,8 @@ bool loadMedia() {
 
 void close() {
   // Free loaded image
-  gTextureWall.free();
-  gTextureSpace.free();
-  gTextureLava.free();
-  gTextureDoor.free();
-  gTextureUpBlock.free();
-  gTextureDownBlock.free();
-  gTextureSlime.free();
-  gTextureSkeleton.free();
-  gTextureBat.free();
-  gTextureApostle.free();
-  gTextureBeelzebub.free();
-  gTextureSmallBottle.free();
-  gTextureBigBottle.free();
-  gTextureSword.free();
-  gTextureShield.free();
-  gTextureLifeGem.free();
-  gTextureKey.free();
-  gTextureHero.free();
+  for (auto &texture : gTexture)
+    texture.free();
 
   TTF_CloseFont(gFont);
   gFont = NULL;
@@ -240,23 +220,23 @@ void close() {
 
 static std::string hero_info() {
   std::stringstream ss;
-  ss << "名字：" << hero.name << '\n'
-     << "生命值：" << hero.hp << '\n'
-     << "生命值上限：" << hero.hp_limit << '\n'
-     << "防御力：" << hero.defence << '\n'
-     << "攻击力：" << hero.attack << '\n'
-     << "小血瓶：" << hero.small_bottle << '\n'
-     << "大血瓶：" << hero.big_bottle << '\n'
-     << "分数：" << hero.score << '\n';
+  ss << "" << hero.getName() << '\n'
+     << "生命值：" << hero.getHp() << '\n'
+     << "生命值上限：" << hero.getHp_limit() << '\n'
+     << "攻击力：" << hero.getAttack() << '\n'
+     << "防御力：" << hero.getDefence() << '\n'
+     << "小血瓶：" << hero.getSmall_bottle() << '\n'
+     << "大血瓶：" << hero.getBig_bottle() << '\n'
+     << "分数：" << hero.getScore() << '\n';
 
   return ss.str();
 }
 
 static std::string monster_info() {
   int monster_quantity[5] = {};
-  for (int i = 0; i < 10; i++)
-    for (int j = 0; j < 10; j++)
-      switch (map[hero.getFloor()][i][j]) {
+  for (int x = 0; x < 10; x++)
+    for (int y = 0; y < 10; y++)
+      switch (map.getCell(x, y, hero.getFloor())) {
       case SLIME:
         monster_quantity[0]++;
         break;
@@ -272,42 +252,40 @@ static std::string monster_info() {
       case BEELZEBUB:
         monster_quantity[4]++;
         break;
+      default:;
       }
 
   std::stringstream ss;
-  ss << "名字：史莱姆酱\n"
+  ss << "史莱姆酱        "
      << "生命值：" << slime.getHp() << "\n"
-     << "攻击力：" << slime.getAttack() << "\n"
+     << "攻击力：" << slime.getAttack() << "        "
      << "防御力：" << slime.getDefence() << "\n"
-     << "特殊属性：无\n"
      << "本层数量：" << monster_quantity[0] << "\n"
      << "\n"
-     << "名字：骷髅士兵\n"
+     << "骷髅士兵        "
      << "生命值：" << skeleton.getHp() << "\n"
-     << "攻击力：" << skeleton.getAttack() << "\n"
+     << "攻击力：" << skeleton.getAttack() << "        "
      << "防御力：" << skeleton.getDefence() << "\n"
-     << "特殊属性：无\n"
      << "本层数量：" << monster_quantity[1] << "\n"
      << "\n"
-     << "名字：吸血蝙蝠\n"
+     << "吸血蝙蝠        "
      << "生命值：" << bat.getHp() << "\n"
-     << "攻击力：" << bat.getAttack() << "\n"
+     << "攻击力：" << bat.getAttack() << "        "
      << "防御力：" << bat.getDefence() << "\n"
      << "特殊属性：吸血\n"
      << "本层数量：" << monster_quantity[2] << "\n"
      << "\n"
-     << "名字：深渊使徒\n"
+     << "深渊使徒        "
      << "生命值：" << apostle.getHp() << "\n"
-     << "攻击力：" << apostle.getAttack() << "\n"
+     << "攻击力：" << apostle.getAttack() << "        "
      << "防御力：" << apostle.getDefence() << "\n"
      << "特殊属性：精神污染\n"
      << "本层数量：" << monster_quantity[3] << "\n"
      << "\n"
-     << "名字：魔王\n"
+     << "魔王        "
      << "生命值：" << beelzebub.getHp() << "\n"
-     << "攻击力：" << beelzebub.getAttack() << "\n"
+     << "攻击力：" << beelzebub.getAttack() << "        "
      << "防御力：" << beelzebub.getDefence() << "\n"
-     << "特殊属性：无\n"
      << "本层数量：" << monster_quantity[4] << "\n";
 
   return ss.str();
@@ -321,77 +299,19 @@ void display() {
   SDL_Color textColor = {0, 0, 0}; // black
 
   // Render map
-  for (int x = 0; x < WIDTH; x++) {
-    for (int y = 0; y < HEIGHT; y++) {
-      switch (map[hero.lct.floor][y][x]) {
-      case WALL:
-        gTextureWall.renderMap(x, y);
-        break;
-      case SPACE:
-        gTextureSpace.renderMap(x, y);
-        break;
-      case LAVA:
-        gTextureLava.renderMap(x, y);
-        break;
-      case DOOR:
-        gTextureDoor.renderMap(x, y);
-        break;
-      case UP_BLOCK:
-        gTextureUpBlock.renderMap(x, y);
-        break;
-      case DOWN_BLOCK:
-        gTextureDownBlock.renderMap(x, y);
-        break;
-      case SLIME:
-        gTextureSlime.renderMap(x, y);
-        break;
-      case SKELETON:
-        gTextureSkeleton.renderMap(x, y);
-        break;
-      case BAT:
-        gTextureBat.renderMap(x, y);
-        break;
-      case APOSTLE:
-        gTextureApostle.renderMap(x, y);
-        break;
-      case BEELZEBUB:
-        gTextureBeelzebub.renderMap(x, y);
-        break;
-      case SMALL_BOTTLE:
-        gTextureSmallBottle.renderMap(x, y);
-        break;
-      case BIG_BOTTLE:
-        gTextureBigBottle.renderMap(x, y);
-        break;
-      case SWORD:
-        gTextureSword.renderMap(x, y);
-        break;
-      case SHIELD:
-        gTextureShield.renderMap(x, y);
-        break;
-      case LIFE_GEM:
-        gTextureLifeGem.renderMap(x, y);
-        break;
-      case KEY:
-        gTextureKey.renderMap(x, y);
-        break;
-      case HERO:
-        gTextureHero.renderMap(x, y);
-        break;
-      }
-    }
-  }
+  for (int x = 0; x < WIDTH; x++)
+    for (int y = 0; y < HEIGHT; y++)
+      gTexture[map.getCell(x, y, hero.getFloor())].renderMap(x, y);
 
   // Render hero's properties
   Ltexture textureProperties;
-  textureProperties.loadFromRenderedText(hero_info(), textColor, LEFT_BAR - 10);
-  textureProperties.renderLeft(10, 10);
+  textureProperties.loadFromRenderedText(hero_info(), textColor, LEFT_BAR - 5);
+  textureProperties.renderLeft(5, 5);
 
   // Render monsters's information
   Ltexture textureMonster;
-  textureMonster.loadFromRenderedText(monster_info(), textColor,
-                                      RIGHT_BAR - 20);
-  textureMonster.renderRight(10, 10);
+  textureMonster.loadFromRenderedText(monster_info(), textColor, RIGHT_BAR - 5);
+  textureMonster.renderRight(5, 5);
 
   // Render end message
   if (end != 0) {

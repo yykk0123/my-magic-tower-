@@ -5,10 +5,18 @@
 
 class Monster : public Role {
 public:
-  // inherite constructor functions,
-  // https://stackoverflow.com/questions/347358/inheriting-constructors
-  using Role::Role;
+  Monster() {}
   ~Monster() {}
+
+  void init(const char *_name, int _hp, int _attack, int _defence, int _score,
+            Skill _skill) {
+    name = _name;
+    hp = _hp;
+    attack = _attack;
+    defence = _defence;
+    score = _score;
+    skill = _skill;
+  };
 };
 
 #endif // _MONSTER_HPP_

@@ -10,8 +10,8 @@ pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 
 # Add source files
-add_executable(${PROJECT_NAME} main.cpp elements.cpp operation.cpp gui.cpp
-                               map.cpp)
+add_executable(${PROJECT_NAME} main.cpp map.cpp hero.cpp gui.cpp operation.cpp
+                               global.cpp)
 
 # Include directories
 include_directories(${SDL2_INCLUDE_DIRS}

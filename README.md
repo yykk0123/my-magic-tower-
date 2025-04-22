@@ -1,6 +1,8 @@
 # yykk's magic tower game
 my first game
 
+Bthxtly contributes so much(my first game with GUI supports)!
+
 ## Introduction
 In this game, you'll act as a hero and is assigned to kill the evil Beelzebub.
 Be careful, since he has many strong monsters: slime, skeleton, bat, and
@@ -66,10 +68,11 @@ Here is the way you can operate the hero:
 - [ ] more monsters and more objects
 - [ ] hero's skill and grading
 ### code
-- [ ] refactor with classes
+- [x] refactor with classes
+- [ ] better structured
 ### interface
 - [x] GUI
-    - [ ] pop-up to choose whether fight with monsters and whether open doors
-    - [ ] magic tower texture
+- [ ] pop-up to choose whether fight with monsters and whether open doors
+- [ ] magic tower texture
 ### operation
-- [ ] custom keys
+- [x] custom keys

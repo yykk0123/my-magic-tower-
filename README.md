@@ -12,6 +12,19 @@ caused by monsters or lava, remember to use blood bottle to heal yourself.
 
 Now, the brave hero, install the game and defeat the Beelzebub!
 
+![preview](preview.png)
+
+## Installation
+Require `SDL2`, `SDL2_image` and `SDL2_ttf`.
+
+```sh
+git clone https://github.com/yykk0123/my-magic-tower-
+cd my-magic-tower-
+cmake -S . -B build
+cmake --build build
+./MAGIC_TOWER
+```
+
 ## Operations
 Here is the way you can operate the hero:
 
@@ -60,6 +73,9 @@ Here is the way you can operate the hero:
 | sword              | add 20 attack                              |
 | shield             | add 10 defence                             |
 | life gem           | add 50 hp limit                            |
+
+## Bonus
+Configure map with `assets/map.json`.
 
 
 ## TODO

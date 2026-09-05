@@ -12,13 +12,15 @@ caused by monsters or lava, remember to use blood bottle to heal yourself.
 
 Now, the brave hero, install the game and defeat the Beelzebub!
 
-![preview](preview.png)
+![preview](lastest_preview.png)
 
 ## Installation
 Require `SDL2`, `SDL2_image` and `SDL2_ttf`.
 
 ```sh
 git clone https://github.com/yykk0123/my-magic-tower-
+sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev pkg-config
+sudo apt install nlohmann-json3-dev
 cd my-magic-tower-
 cmake -S . -B build
 cmake --build build
@@ -81,14 +83,16 @@ Configure map with `assets/map.json`.
 ## TODO
 ### content
 - [ ] better maps
-- [ ] more monsters and more objects
+- [x] more monsters and more objects
 - [ ] hero's skill and grading
+- [ ] more item and npc 
+- [ ] movements when monsters attack or hero walk  
 ### code
 - [x] refactor with classes
 - [ ] better structured
 ### interface
 - [x] GUI
 - [ ] pop-up to choose whether fight with monsters and whether open doors
-- [ ] magic tower texture
+- [x] magic tower texture
 ### operation
 - [x] custom keys

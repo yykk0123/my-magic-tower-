@@ -17,8 +17,8 @@
 #define MOVE_LEFT SDLK_a
 #define MOVE_UP SDLK_w
 #define MOVE_DOWN SDLK_s
-#define USE_BIG_BOTTLE SDLK_q
-#define USE_SMALL_BOTTLE SDLK_e
+#define USE_BLUE_BOTTLE SDLK_q
+#define USE_HEALTH_BOTTLE SDLK_e
 #define RESTART SDLK_r
 #define EXIT_GAME SDLK_z
 #endif

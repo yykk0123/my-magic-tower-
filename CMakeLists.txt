@@ -15,7 +15,8 @@ add_executable(${PROJECT_NAME} main.cpp map.cpp hero.cpp gui.cpp operation.cpp
 
 # Include directories
 include_directories(${SDL2_INCLUDE_DIRS}
-                    ${SDL2_IMAGE_INCLUDE_DIRS}${SDL2_TTF_INCLUDE_DIRS})
+                    ${SDL2_IMAGE_INCLUDE_DIRS}
+                    ${SDL2_TTF_INCLUDE_DIRS})
 
 # # Link directories (usually optional on Linux but safe to add)
 # link_directories(${SDL2_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS})

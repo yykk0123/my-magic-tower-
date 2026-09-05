@@ -12,11 +12,11 @@
     case LAVA:                                                                 \
       map.setCell(hero.getX(), hero.getY(), hero.getFloor(), LAVA);            \
       break;                                                                   \
-    case UP_BLOCK:                                                             \
-      map.setCell(hero.getX(), hero.getY(), hero.getFloor(), UP_BLOCK);        \
+    case UPSTAIR:                                                             \
+      map.setCell(hero.getX(), hero.getY(), hero.getFloor(), UPSTAIR);        \
       break;                                                                   \
-    case DOWN_BLOCK:                                                           \
-      map.setCell(hero.getX(), hero.getY(), hero.getFloor(), DOWN_BLOCK);      \
+    case DOWNSTAIR:                                                           \
+      map.setCell(hero.getX(), hero.getY(), hero.getFloor(), DOWNSTAIR);      \
       break;                                                                   \
     default:                                                                   \
       map.setCell(hero.getX(), hero.getY(), hero.getFloor(), SPACE);           \
@@ -29,10 +29,16 @@
 int move(Direction dir) {
   int dx = (dir == RIGHT) - (dir == LEFT);
   int dy = (dir == DOWN) - (dir == UP);
-  elements current_block =
-      map.getCell(hero.getX(), hero.getY(), hero.getFloor());
-  elements next_block =
-      map.getCell(hero.getX() + dx, hero.getY() + dy, hero.getFloor());
+  int nextX = hero.getX() + dx;
+  int nextY = hero.getY() + dy;
+
+  // beyond range
+  if (nextX < 0 || nextX >= map.getWidth() ||
+      nextY < 0 || nextY >= map.getHeight()) {
+      return 0;
+  }
+
+  elements next_block = map.getCell(nextX, nextY, hero.getFloor());
 
   switch (next_block) {
   case WALL: // do nothing
@@ -44,35 +50,41 @@ int move(Direction dir) {
     hero.goLava();
     _move_forward();
     break;
-  case DOOR: // move forward if have key(s), else do nothing
+  case STONE_DOOR: // move forward if have key(s), else do nothing
     if (hero.goDoor())
       _move_forward();
     break;
-  case UP_BLOCK: // go to up floor
-    _move_forward();
-    hero.goUp_block();
+  case UPSTAIR: // go to up floor
+    if (hero.getFloor() + 1 < map.getFloor()) {
+      _move_forward();
+      map.setCell(hero.getX(), hero.getY(), hero.getFloor(), UPSTAIR);
+      hero.goUp_block();
+    }
     break;
-  case DOWN_BLOCK: // go to down floor
-    _move_forward();
-    hero.goDown_block();
+  case DOWNSTAIR: // go to down floor
+    if (hero.getFloor() > 0) {
+      _move_forward();
+      map.setCell(hero.getX(), hero.getY(), hero.getFloor(), DOWNSTAIR);
+      hero.goDown_block();
+    }
     break;
 
-  case SLIME:
+  case SLIME_GREEN:
   case SKELETON:
   case BAT:
-  case APOSTLE:
+  case APOSTLE_RED:
   case BEELZEBUB:
     if (hero.battle(next_block)) {
       _move_forward(); // defeat the monster
     }
     break;
 
-  case SMALL_BOTTLE:
-    hero.aquireSmall_bottle();
+  case HEALTH_BOTTLE:
+    hero.aquireHealth_bottle();
     _move_forward();
     break;
-  case BIG_BOTTLE:
-    hero.aquireBig_bottle();
+  case BLUE_BOTTLE:
+    hero.aquireBlue_bottle();
     _move_forward();
     break;
   case SWORD:
@@ -83,11 +95,11 @@ int move(Direction dir) {
     hero.aquireShield();
     _move_forward();
     break;
-  case LIFE_GEM:
+  case HEALTH_CRYSTAL:
     hero.aquireLife_gem();
     _move_forward();
     break;
-  case KEY:
+  case STONE_KEY:
     hero.aquireKey();
     _move_forward();
     break;

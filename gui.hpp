@@ -11,11 +11,15 @@
 #define ZOOM_RATE 5
 #define CELL_SIZE (ZOOM_RATE * 16) // 80
 
-#define LEFT_BAR (5 * CELL_SIZE)  // 400
-#define RIGHT_BAR (5 * CELL_SIZE) // 400
-
-#define SCREEN_HEIGHT (CELL_SIZE * HEIGHT)                      // 800
-#define SCREEN_WIDTH (LEFT_BAR + CELL_SIZE * WIDTH + RIGHT_BAR) // 1600
+// lcg/0.png is 640x400 and uses 32px tiles.  At 80px per tile its
+// pixel-perfect scale is 2.5, producing a 1600x1000 window.
+#define SCREEN_WIDTH (20 * CELL_SIZE)          // 1600
+#define SCREEN_HEIGHT ((25 * CELL_SIZE) / 2)   // 1000
+#define MAP_LEFT ((9 * CELL_SIZE) / 2)         // 360
+#define MAP_TOP ((3 * CELL_SIZE) / 4)          // 60
+#define LEFT_BAR (4 * CELL_SIZE)               // 320
+#define RIGHT_PANEL_X (16 * CELL_SIZE)         // 1280
+#define RIGHT_BAR (4 * CELL_SIZE)              // 320
 
 class Ltexture {
 public:
@@ -32,6 +36,7 @@ public:
   void renderLeft(int x, int y);
   void renderMap(int x, int y);
   void renderRight(int x, int y);
+  void renderScaled(int x, int y, int width, int height);
 
   int getWidth();
   int getHeight();

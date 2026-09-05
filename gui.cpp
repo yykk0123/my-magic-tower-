@@ -106,8 +106,9 @@ void Ltexture::free() {
 }
 
 void Ltexture::renderMap(int x, int y) {
-  SDL_Rect renderQuad = {LEFT_BAR + x * CELL_SIZE, y * CELL_SIZE, mWidth,
-                         mHeight};
+  SDL_Rect renderQuad = {MAP_LEFT + x * CELL_SIZE, MAP_TOP + y * CELL_SIZE,
+                         CELL_SIZE, CELL_SIZE};
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
   SDL_RenderCopy(gRenderer, mTexture, NULL, &renderQuad);
 }
 
@@ -117,7 +118,12 @@ void Ltexture::renderLeft(int x, int y) {
 }
 
 void Ltexture::renderRight(int x, int y) {
-  SDL_Rect renderQuad = {LEFT_BAR + CELL_SIZE * WIDTH + x, y, mWidth, mHeight};
+  SDL_Rect renderQuad = {RIGHT_PANEL_X + x, y, mWidth, mHeight};
+  SDL_RenderCopy(gRenderer, mTexture, NULL, &renderQuad);
+}
+
+void Ltexture::renderScaled(int x, int y, int width, int height) {
+  SDL_Rect renderQuad = {x, y, width, height};
   SDL_RenderCopy(gRenderer, mTexture, NULL, &renderQuad);
 }
 
@@ -165,31 +171,51 @@ bool init() {
   return true;
 }
 
+//link element to png
+const char* elements_to_png[TOTAL_SUM]={
+  "player1.png",
+  "ground/0.png","ground/1.png","ground/2.png","ground/3.png","ground/4.png",
+  "ground/5.png","ground/6.png","ground/7.png","ground/8.png","ground/9.png",
+  "ground/10.png","ground/11.png","ground/12.png","ground/13.png",
+  "item/0.png","item/1.png","item/2.png","item/3.png","item/4.png","item/5.png",
+  "item/6.png","item/7.png","item/8.png","item/9.png","item/10.png","item/11.png",
+  "item/12.png","item/13.png","item/14.png","item/15.png","item/16.png","item/17.png",
+  "item/18.png","item/19.png","item/20.png","item/21.png",
+  "monster/1.png","monster/3.png","monster/5.png","monster/6.png","monster/8.png",
+  "monster/10.png","monster/12.png","monster/14.png","monster/16.png","monster/18.png",
+  "monster/20.png","monster/22.png","monster/24.png","monster/26.png","monster/28.png",
+  "monster/30.png","monster/32.png","monster/34.png","monster/36.png","monster/37.png",
+  "monster/38.png","monster/39.png","monster/40.png","monster/41.png","monster/42.png",
+  "monster/43.png","monster/44.png","monster/54.png","monster/55.png","monster/56.png",
+  "monster/57.png","monster/58.png","monster/59.png","monster/60.png","monster/61.png",
+  "monster/62.png","monster/72.png","monster/74.png","monster/76.png","monster/78.png",
+  "monster/80.png","monster/82.png","monster/84.png","monster/86.png","monster/88.png",
+  "monster/90.png","monster/92.png","monster/94.png","monster/96.png","monster/98.png",
+  "monster/100.png",
+  "object/0.png","object/1.png","object/2.png","object/4.png","object/6.png",
+  "object/8.png","object/10.png","object/12.png",
+  "weapon/0.png","weapon/1.png","weapon/2.png","weapon/3.png","weapon/4.png",
+  "weapon/5.png","weapon/6.png","weapon/7.png","weapon/8.png","weapon/9.png",
+  "lcg/0.png",
+  "picture/0.png","picture/1.png","picture/2.png",
+};
+
+//check png 
+bool check_png(const std::string texture_path){
+  for(int i=0;i<TOTAL_SUM;i++){
+    if(!gTexture[i].loadFromFile(texture_path+elements_to_png[i])){
+      printf("Failed to load texture image!\n");
+      return false;
+    }
+  }
+  return true;
+}
+
 bool loadMedia() {
-  std::string texture_path = "assets/image/80x80/";
-  if (!(gTexture[WALL].loadFromFile(texture_path + "wall.png") &&
-        gTexture[SPACE].loadFromFile(texture_path + "space.png") &&
-        gTexture[LAVA].loadFromFile(texture_path + "lava.png") &&
-        gTexture[DOOR].loadFromFile(texture_path + "door.png") &&
-        gTexture[UP_BLOCK].loadFromFile(texture_path + "up_block.png") &&
-        gTexture[DOWN_BLOCK].loadFromFile(texture_path + "down_block.png") &&
-        gTexture[SLIME].loadFromFile(texture_path + "slime.png") &&
-        gTexture[SKELETON].loadFromFile(texture_path + "skeleton.png") &&
-        gTexture[BAT].loadFromFile(texture_path + "bat.png") &&
-        gTexture[APOSTLE].loadFromFile(texture_path + "apostle.png") &&
-        gTexture[BEELZEBUB].loadFromFile(texture_path + "beelzebub.png") &&
-        gTexture[SMALL_BOTTLE].loadFromFile(texture_path +
-                                            "small_bottle.png") &&
-        gTexture[BIG_BOTTLE].loadFromFile(texture_path + "big_bottle.png") &&
-        gTexture[SWORD].loadFromFile(texture_path + "sword.png") &&
-        gTexture[SHIELD].loadFromFile(texture_path + "shield.png") &&
-        gTexture[LIFE_GEM].loadFromFile(texture_path + "life_gem.png") &&
-        gTexture[KEY].loadFromFile(texture_path + "key.png") &&
-        gTexture[HERO].loadFromFile(texture_path + "hero.png"))) {
-    printf("Failed to load texture image!\n");
+  std::string texture_path = "assets/textures/";
+  if(!check_png(texture_path)){
     return false;
   }
-
   if ((gFont = TTF_OpenFont("assets/wqy-zenhei.ttc", 28)) == NULL) {
     printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
     return false;
@@ -218,18 +244,35 @@ void close() {
   SDL_Quit();
 }
 
-static std::string hero_info() {
-  std::stringstream ss;
-  ss << "" << hero.getName() << '\n'
-     << "生命值：" << hero.getHp() << '\n'
-     << "生命值上限：" << hero.getHp_limit() << '\n'
-     << "攻击力：" << hero.getAttack() << '\n'
-     << "防御力：" << hero.getDefence() << '\n'
-     << "小血瓶：" << hero.getSmall_bottle() << '\n'
-     << "大血瓶：" << hero.getBig_bottle() << '\n'
-     << "分数：" << hero.getScore() << '\n';
+static void renderTextInLeftBox(const std::string &text, const SDL_Rect &box,
+                                SDL_Color color) {
+  Ltexture texture;
+  if (!texture.loadFromRenderedText(text, color, box.w))
+    return;
 
-  return ss.str();
+  const int x = box.x + (box.w - texture.getWidth()) / 2;
+  const int y = box.y + (box.h - texture.getHeight()) / 2;
+  texture.renderLeft(x, y);
+}
+
+static void renderHeroInfo(SDL_Color textColor) {
+  // Coordinates of the five gray fields in lcg/0.png, scaled by 2.5.
+  const SDL_Rect nameBox = {68, 113, 185, 55};
+  const SDL_Rect hpBox = {110, 193, 180, 57};
+  const SDL_Rect attackBox = {110, 253, 180, 55};
+  const SDL_Rect defenceBox = {110, 315, 180, 50};
+  const SDL_Rect coinBox = {110, 375, 180, 50};
+
+  renderTextInLeftBox(hero.getName(), nameBox, textColor);
+  renderTextInLeftBox("生命 " + std::to_string(hero.getHp()) + "/" +
+                          std::to_string(hero.getHp_limit()),
+                      hpBox, textColor);
+  renderTextInLeftBox("攻击 " + std::to_string(hero.getAttack()), attackBox,
+                      textColor);
+  renderTextInLeftBox("防御 " + std::to_string(hero.getDefence()), defenceBox,
+                      textColor);
+  renderTextInLeftBox("金币 " + std::to_string(hero.getCoin()), coinBox,
+                      textColor);
 }
 
 static std::string monster_info() {
@@ -237,7 +280,7 @@ static std::string monster_info() {
   for (int x = 0; x < 10; x++)
     for (int y = 0; y < 10; y++)
       switch (map.getCell(x, y, hero.getFloor())) {
-      case SLIME:
+      case SLIME_GREEN:
         monster_quantity[0]++;
         break;
       case SKELETON:
@@ -246,7 +289,7 @@ static std::string monster_info() {
       case BAT:
         monster_quantity[2]++;
         break;
-      case APOSTLE:
+      case APOSTLE_RED:
         monster_quantity[3]++;
         break;
       case BEELZEBUB:
@@ -296,22 +339,31 @@ void display() {
   SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
   SDL_RenderClear(gRenderer);
 
-  SDL_Color textColor = {0, 0, 0}; // black
+  // Render the original background before the map and UI text.
+  gTexture[BACKGROUND].renderScaled(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-  // Render map
-  for (int x = 0; x < WIDTH; x++)
-    for (int y = 0; y < HEIGHT; y++)
-      gTexture[map.getCell(x, y, hero.getFloor())].renderMap(x, y);
+  SDL_Color textColor = {0xFF, 0xFF, 0xFF, 0xFF}; // white
 
-  // Render hero's properties
-  Ltexture textureProperties;
-  textureProperties.loadFromRenderedText(hero_info(), textColor, LEFT_BAR - 5);
-  textureProperties.renderLeft(5, 5);
+  // Render the floor first, then place the current element on top.  This makes
+  // transparent pixels around heroes, monsters and items show the floor
+  // texture instead of the dark background of the UI frame.
+  for (int x = 0; x < WIDTH; x++) {
+    for (int y = 0; y < HEIGHT; y++) {
+      const elements tile = map.getCell(x, y, hero.getFloor());
+      gTexture[SPACE].renderMap(x, y);
+      if (tile != SPACE)
+        gTexture[tile].renderMap(x, y);
+    }
+  }
 
-  // Render monsters's information
+  // Render each hero property inside its matching field on the background.
+  renderHeroInfo(textColor);
+
+  /* Render monsters's information
   Ltexture textureMonster;
   textureMonster.loadFromRenderedText(monster_info(), textColor, RIGHT_BAR - 5);
   textureMonster.renderRight(5, 5);
+  */
 
   // Render end message
   if (end != 0) {

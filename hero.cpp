@@ -13,16 +13,19 @@ void Hero::init(const char *_name, int _hp_limit, int _attack, int _defence,
   defence = _defence;
   skill = _skill;
   score = 0;
+  floor = 0;
   key = 0;
-  small_bottle = 0;
-  big_bottle = 0;
+  health_bottle = 0;
+  blue_bottle = 0;
+  experience=0;
+  coin=0;
 }
 
 static inline int min(int a, int b) { return (a < b ? a : b); }
 
-int Hero::use_small_bottle() {
-  if (small_bottle) {
-    small_bottle--;
+int Hero::use_health_bottle() {
+  if (health_bottle) {
+    health_bottle--;
     hp += 10;
     hp = min(hp, hp_limit);
     return 1;
@@ -30,9 +33,9 @@ int Hero::use_small_bottle() {
   return 0;
 }
 
-int Hero::use_big_bottle() {
-  if (big_bottle) {
-    big_bottle--;
+int Hero::use_blue_bottle() {
+  if (blue_bottle) {
+    blue_bottle--;
     hp += 25;
     hp = min(hp, hp_limit);
     return 1;
@@ -40,13 +43,16 @@ int Hero::use_big_bottle() {
   return 0;
 }
 
-void Hero::update_location() {
+bool Hero::update_location(elements spawn_element) {
   for (int h = 0; h < map.getHeight(); h++)
     for (int w = 0; w < map.getWidth(); w++)
-      if (map.getCell(w, h, hero.getFloor()) == HERO) {
+      if (map_original.getCell(w, h, hero.getFloor()) == spawn_element) {
         hero.setX(w);
         hero.setY(h);
+        map.setCell(w, h, hero.getFloor(), HERO);
+        return true;
       }
+  return false;
 }
 
 bool Hero::battle(elements monster_type) {
@@ -54,10 +60,10 @@ bool Hero::battle(elements monster_type) {
   Monster *mst;
   switch (monster_type) {
     // clang-format off
-    case SLIME:     mst=&slime;     break;
+    case SLIME_GREEN:     mst=&slime;     break;
     case SKELETON:  mst=&skeleton;  break;
     case BAT:       mst=&bat;       break;
-    case APOSTLE:   mst=&apostle;   break;
+    case APOSTLE_RED:   mst=&apostle;   break;
     case BEELZEBUB: mst=&beelzebub; break;
     default:;
     // clang-format on

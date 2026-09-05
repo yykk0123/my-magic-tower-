@@ -58,11 +58,11 @@ int main() {
         case MOVE_DOWN:
           end == 0 && move(DOWN);
           break;
-        case USE_SMALL_BOTTLE:
-          end == 0 && hero.use_small_bottle();
+        case USE_HEALTH_BOTTLE:
+          end == 0 && hero.use_health_bottle();
           break;
-        case USE_BIG_BOTTLE:
-          end == 0 && hero.use_big_bottle();
+        case USE_BLUE_BOTTLE:
+          end == 0 && hero.use_blue_bottle();
           break;
         case RESTART:
           initialize();

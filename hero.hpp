@@ -13,9 +13,9 @@ public:
             Skill skill);
 
   bool battle(elements monster_type);
-  int use_small_bottle();
-  int use_big_bottle();
-  void update_location();
+  int use_health_bottle();
+  int use_blue_bottle();
+  bool update_location(elements spawn_element = HERO);
 
   std::string getName() { return name; }
   int getHp() { return hp; }
@@ -24,8 +24,10 @@ public:
   int getDefence() { return defence; }
   int getScore() { return score; }
   Skill getSkill() { return skill; }
-  int getSmall_bottle() { return small_bottle; }
-  int getBig_bottle() { return big_bottle; }
+  int getHealth_bottle() { return health_bottle; }
+  int getBlue_bottle() { return blue_bottle; }
+  int getCoin(){ return coin;}
+  int getExperience(){ return experience;}
   int getX() { return x; }
   int getY() { return y; }
   int getFloor() { return floor; }
@@ -33,17 +35,17 @@ public:
   // clang-format off
   void goLava() { hp--; }
   bool goDoor() { if (key) { key--; return true; } return false; }
-  void goUp_block() { floor++; update_location(); }
-  void goDown_block() { floor--; update_location(); }
-  void aquireSmall_bottle() { small_bottle++; }
-  void aquireBig_bottle() { big_bottle++; }
+  void goUp_block() { floor++; update_location(DOWNSTAIR); }
+  void goDown_block() { floor--; update_location(UPSTAIR); }
+  void aquireHealth_bottle() { health_bottle++; }
+  void aquireBlue_bottle() { blue_bottle++; }
   void aquireSword() { attack += 20; }
   void aquireShield() { defence += 10; }
   void aquireLife_gem() { hp_limit += 50; }
   void aquireKey() { key++; }
   void setX(int _x) { x = _x; }
   void setY(int _y) { y = _y; }
-  void setFloor(int floor) { floor = floor; }
+  void setFloor(int _floor) { floor = _floor; }
   // clang-format on
 
 private:
@@ -55,8 +57,10 @@ private:
   Skill skill;
   int score;
   int key;
-  int small_bottle;
-  int big_bottle;
+  int health_bottle;
+  int blue_bottle;
+  int coin;
+  int experience;
   int x;
   int y;
   int floor;

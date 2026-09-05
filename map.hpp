@@ -15,6 +15,7 @@ public:
 
   int getWidth() { return width; }
   int getHeight() { return height; }
+  int getFloor()  { return map.size(); }
   elements getCell(int w, int h, int floor) { return map[floor][h][w]; }
   void setCell(int w, int h, int floor, elements ele) {
     map[floor][h][w] = ele;
